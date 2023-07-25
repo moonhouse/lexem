@@ -1,6 +1,7 @@
-from distutils.log import error
 import gzip
 import json
+from distutils.log import error
+
 from bloom_filter2 import BloomFilter
 
 values = 0
@@ -12,11 +13,12 @@ with gzip.open("latest-lexemes.json.gz", 'rt') as lexemes:
             line = line.rstrip(",\n")
             data = json.loads(line)
             if 'sv' in data['lemmas']:
-                forms = [x['representations']['sv']['value'] for x in data['forms']]
+                forms = [x['representations']['sv']['value']
+                         for x in data['forms']]
                 forms.append(data['lemmas']['sv']['value'])
                 unique = list(set(forms))
                 for word in unique:
                     bloom.add(word)
                 values += len(unique)
-                #print(list(set(forms)))
+                # print(list(set(forms)))
     print(values)
